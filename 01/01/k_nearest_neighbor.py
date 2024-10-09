@@ -103,8 +103,7 @@ class KNearestNeighbor:
             #######################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
             test_vec = X[i].ravel()
-            dist = (np.tile(test_vec, num_train) - self.X_train.ravel()) ** 2
-            dist = dist.reshape(num_train, -1)
+            dist = (self.X_train - test_vec) ** 2
             dist = dist.sum(axis=1)
             dists[i, :] = dist ** 0.5
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
@@ -134,11 +133,10 @@ class KNearestNeighbor:
         #       and two broadcast sums.                                         #
         #########################################################################
         # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-        test_vec = X.ravel()
-        dist = (np.tile(test_vec, num_train) - np.tile(self.X_train, num_test).ravel()) ** 2
-        dist = dist.reshape(num_train, num_test, -1)
-        dist = dist.sum(axis=2).T
-        dists = dist ** 0.5
+        X_train_sq = np.sum(self.X_train ** 2, axis=1)
+        X_test_sq = np.sum(X ** 2, axis=1)
+        cross_term = np.dot(X, self.X_train.T)  # (num_test, num_train)
+        dists = np.sqrt(X_test_sq[:, np.newaxis] + X_train_sq - 2 * cross_term)
         # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
         return dists
 
