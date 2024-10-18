@@ -102,8 +102,7 @@ class KNearestNeighbor:
             # Do not use np.linalg.norm().                                        #
             #######################################################################
             # *****START OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
-            test_vec = X[i].ravel()
-            dist = (self.X_train - test_vec) ** 2
+            dist = (self.X_train - X[i]) ** 2
             dist = dist.sum(axis=1)
             dists[i, :] = dist ** 0.5
             # *****END OF YOUR CODE (DO NOT DELETE/MODIFY THIS LINE)*****
